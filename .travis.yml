@@ -9,7 +9,7 @@ php:
 before_script:
   - composer self-update
   - composer install --no-interaction
-  - cp .env.travis .env
+  - cp BACKEND/.env.travis BACKEND/.env
   - pear install pear/PHP_CodeSniffer
   - phpenv rehash
   - apt-get install php7.2-xml
