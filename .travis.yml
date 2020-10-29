@@ -16,6 +16,7 @@ before_script:
   - npm install npm@latest -g
   - npm install -g jshint
   - npm install
-  
+  - mysql -u root -e 'CREATE DATABASE credpal;'
+  - mysql -u root credpal < tests/credpal.sql
 script:
   - cd  BACKEND/ && vendor/bin/phpunit --coverage-text

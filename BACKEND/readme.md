@@ -54,6 +54,10 @@ DATABASE MYSQL
 
 ## vendor/bin/phpunit
 
+before_script:
+  - mysql -u root -e 'CREATE DATABASE testbase;'
+  - mysql -u root testbase < tests/testbase.sql
+
 ## access swagger page http://localhost:9000/api/documentation
 
 ## php -S localhost:9000 public/index.php
