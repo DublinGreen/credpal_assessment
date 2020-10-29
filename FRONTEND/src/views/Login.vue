@@ -98,9 +98,6 @@ export default {
       localStorage.setItem(store.state.setIsLoginLocalStorageKey, false);
       localStorage.setItem(store.state.setTokenLocalStorageKey, "");
     }
-
-    let param = this.$route.params.referral_codes;
-    this.referral_codes = param;
   },
   mixins: [validationMixin],
   validations: {
