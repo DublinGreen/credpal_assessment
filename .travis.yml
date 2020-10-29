@@ -12,10 +12,7 @@ before_script:
   - cp .env.travis .env
   - pear install pear/PHP_CodeSniffer
   - phpenv rehash
-  - nvm install 7.7.1
-  - npm install npm@latest -g
-  - npm install -g jshint
-  - npm install
+  - apt-get install php7.2-xml
   - mysql -u root -e 'CREATE DATABASE credpal;'
   - mysql -u root credpal < tests/credpal.sql
 script:
