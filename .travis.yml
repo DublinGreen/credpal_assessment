@@ -18,4 +18,4 @@ before_script:
   - npm install
   
 script:
-  - vendor/BACKEND/bin/phpunit --coverage-text
+  - BACKEND/vendor/bin/phpunit --coverage-text
