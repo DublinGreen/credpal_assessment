@@ -20,7 +20,7 @@ const routes = [
     component: () => import("../views/Profile.vue")
   },
   {
-    path: "/EditProfile/:c",
+    path: "/EditProfile/:name",
     name: "EditProfile",
     component: () => import("../views/EditProfile.vue")
   },
@@ -38,11 +38,6 @@ const routes = [
     path: "/Wallet",
     name: "Wallet",
     component: () => import("../views/Wallet.vue")
-  },
-  {
-    path: "/ManageUserDocumentsCrud",
-    name: "ManageUserDocumentsCrud",
-    component: () => import("../views/ManageUserDocumentsCrud.vue")
   },
   {
     path: "/ConfirmEmail/:companyName/:key",

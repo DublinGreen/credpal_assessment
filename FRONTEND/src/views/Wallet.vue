@@ -290,11 +290,6 @@ export default {
 
     breadCrumbsData: [
       {
-        text: "View My Documents",
-        disabled: false,
-        href: "#/ManageUserDocumentsCrud"
-      },
-      {
         text: "Wallet",
         disabled: true,
         href: ""
@@ -427,7 +422,10 @@ export default {
       this.$v.$touch();
       if (!this.$v.$invalid) {
         let answer = confirm(
-          "Are you sure you want to transfer funds " + this.receiverUserData.first_name + " " + this.receiverUserData.last_name
+          "Are you sure you want to transfer funds " +
+            this.receiverUserData.first_name +
+            " " +
+            this.receiverUserData.last_name
         );
         if (answer) {
           this.showLoadingIcon = true;
