@@ -1,4 +1,4 @@
-# USSD ADMIN UI
+# credpal UI
 
 ## Project setup
 

@@ -41,7 +41,7 @@ Include .env file to make it easier with installation (TAKE NOTE). If you need t
 It is important you run on port 9000, the frontend is listening on that port.
 
 # STEP 3 : BACKEND (test)
-Run full test on the backend with the command but from inside the BACKEND directory 
+Run full test on the backend with the command but from inside the BACKEND directory. If you don't php7.2-xml. You need to install it to turn the php unit tests
 	vendor/bin/phpunit
 
 # STEP 4 : BACKEND (Swagger API)

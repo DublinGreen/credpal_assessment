@@ -24,7 +24,6 @@ $router->post(
 
 //$router->get('auth/confirmEmail/{companyName}/{linkKey}', ['uses' => 'UserController@confirmEmail']);
 
-
 $router->post('auth/createUser', ['uses' => 'UserController@create']);
 
 $router->post('auth/getIDByReferralCodes', ['uses' => 'UserController@getIDByReferralCodes']);
@@ -46,40 +45,9 @@ $router->group(['middleware' => 'jwt.auth', 'prefix' => 'apiv1'], function () us
 
     $router->post('getAccountNumberByUserID', ['uses' => 'AccountController@getAccountNumberByUserID']);
 
-    #//
-    $router->get('getUserByName/{name}', ['uses' => 'UserController@getUserByName']);
-
     $router->put('updateUser/{id}', ['uses' => 'UserController@update']);
 
-    $router->post("updateCompanyLogo", ['uses' => 'UserController@updateCompanyLogo']);
-
-    $router->post("uploadDocument", ['uses' => 'UserDocumentController@uploadDocument']);
-
-    $router->get('getUserDocuments/{id}', ['uses' => 'UserDocumentController@getUserDocuments']);
-
-    $router->post("updateUserDocument", ['uses' => 'UserDocumentController@updateUserDocument']);
-
-    $router->post("sendDocumentViaEmail", ['uses' => 'UserDocumentController@sendDocumentViaEmail']);
-
-    $router->get('fetchUserDocument/{key}', ['uses' => 'UserDocumentController@fetchUserDocument']);
-
-    $router->get('getActiveDocumentType', ['uses' => 'UserDocumentTypeController@getAllActiveDocumentType']);
-
-    $router->get('getDocumentTypeByID/{id}', ['uses' => 'UserDocumentTypeController@getDocumentByID']);
-
-    $router->get('getDocumentTypeByName/{name}', ['uses' => 'UserDocumentTypeController@getDocumentByName']);
-
-    $router->get('getDocumentExpirationByName/{name}', ['uses' => 'UserDocumentExpirationController@getDocumentExpirationByName']);
-
-    $router->get('getAllActiveDocumentExpiration', ['uses' => 'UserDocumentExpirationController@getAllActiveDocumentExpiration']);
-
-    $router->get('getDocumentExpirationByID/{id}', ['uses' => 'UserDocumentExpirationController@getDocumentExpirationByID']);
-
-    $router->get('getAllActiveTrainingWithFiles', ['uses' => 'TrainingController@getAllActiveTrainingWithFiles']);
-
-    $router->get('getAllTraining', ['uses' => 'TrainingController@getAllTraining']);
-
-    $router->get('getTrainingByID/{id}', ['uses' => 'TrainingController@getTrainingByID']);
+    $router->get('getUserByName/{name}', ['uses' => 'UserController@getUserByName']);
 });
 
 

@@ -1,4 +1,4 @@
-# corporate setup documentation (Lumen PHP Framework)
+# credpal backend setup documentation (Lumen PHP Framework)
 
 [![Build Status](https://travis-ci.org/laravel/lumen-framework.svg)](https://travis-ci.org/laravel/lumen-framework)
 [![Total Downloads](https://poser.pugx.org/laravel/lumen-framework/d/total.svg)](https://packagist.org/packages/laravel/lumen-framework)
@@ -20,25 +20,10 @@ If you discover a security vulnerability within Lumen, please send an e-mail to 
 
 The Lumen framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
 
-# PROJECT TECHNOLOGIES
-
-FRONTEND WITH VUE JS
-BACKEND WITH LUMEN
-DATABASE MYSQL
 
 ## COMMONLY USED COMMANDS, LINKS
 
 ## php -S localhost:9000 -t public
-
-## php -S corporatesetup.app:9000 -t public
-
-## php -S 134.209.18.95:9000 -t public
-
-## ALTER TABLE `users_documents`
-
-## ADD CONSTRAINT `user_document_to_company_id` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
-
-## https://httpstatuses.com/
 
 ## php artisan swagger-lume:generate
 
@@ -46,33 +31,10 @@ DATABASE MYSQL
 
 ## php artisan swagger-lume:
 
-## Used php 7.2 to develop
-
 ## apt-get install php7.2-xml (install php7.2-xml)
-
-## need php 7.3 to run test
 
 ## vendor/bin/phpunit
 
-before_script:
-
-- mysql -u root -e 'CREATE DATABASE testbase;'
-- mysql -u root testbase < tests/testbase.sql
-
 ## access swagger page http://localhost:9000/api/documentation
 
-## php -S localhost:9000 public/index.php
-
-## If you're already running the SQL shell, you can use the source command to import data:
-
-## use databasename;
-
-## source data.sql;
-
-## https://gitmemory.com/issue/DarkaOnLine/SwaggerLume/71/488768241
-
-## https://medium.com/@garrettvorce/getting-started-with-laravel-and-swagger-b14c66f35576
-
-## ALTER TABLE Persons ADD UNIQUE (ID);
-
-## https://www.digitalocean.com/community/questions/how-keep-my-app-running-after-close-putty-f82aab17-ca84-46a0-8a39-3e25f1dd2d45
+## access swagger json http://localhost:9000/api/
