@@ -16,6 +16,14 @@ class CredPalTest extends TestCase
         );
     }
 
+
+    public function testLogin()
+    {
+        $response = $this->call('POST', '/auth/login');
+
+        $this->assertEquals(422, $response->status());
+    }
+
     public function testCreateUser()
     {
         $response = $this->call('POST', '/auth/createUser');
@@ -32,6 +40,14 @@ class CredPalTest extends TestCase
                 'message' => 'Validation errors',
                 "status" => false,
             ]);
+    }
+
+    public function testGetIDByReferralCodes()
+    {
+
+        $response = $this->call('POST', ' auth/getIDByReferralCodes/');
+
+        $this->assertEquals(200, $response->status());
     }
 
     public function testGetAccountByAccountNumber()

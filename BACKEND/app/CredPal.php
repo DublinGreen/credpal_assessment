@@ -185,7 +185,7 @@ class CredPal implements CredPal_Interface
             'referral_codes' => $this->genReferralCode($userArray['mobile'], $userArray['email']),
             'password' => Hash::make($userArray['password']),
             'type' => $this::APP_USER_TYPE[1],
-            'status ' => $this::ACCOUNT_STATUS_OPTIONS[0], // FOR NOW UNTIL MOBILE VALIDATION CAN BE DONE
+            'status ' => 'ACTIVE', // FOR NOW UNTIL MOBILE VALIDATION CAN BE DONE
         ]);
 
         $bool = $newUser->save();

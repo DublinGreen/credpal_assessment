@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Oct 30, 2020 at 05:20 PM
+-- Generation Time: Oct 30, 2020 at 05:37 PM
 -- Server version: 10.4.8-MariaDB
 -- PHP Version: 7.3.11
 
@@ -49,7 +49,9 @@ INSERT INTO `accounts` (`id`, `user_id`, `account_number`, `account_type`, `stat
 (24, 32, '1164383802', 'CREDIT', 'ACTIVE', '2020-10-29 04:55:05', '2020-10-29 04:55:05'),
 (33, 42, '5843163454', 'CREDIT', 'ACTIVE', '2020-10-30 04:31:27', '2020-10-30 04:31:27'),
 (34, 43, '9031595909', 'CREDIT', 'ACTIVE', '2020-10-30 04:34:12', '2020-10-30 04:34:12'),
-(35, 44, '9755703113', 'CREDIT', 'ACTIVE', '2020-10-30 04:36:36', '2020-10-30 04:36:36');
+(35, 44, '9755703113', 'CREDIT', 'ACTIVE', '2020-10-30 04:36:36', '2020-10-30 04:36:36'),
+(36, 45, '6716380450', 'CREDIT', 'ACTIVE', '2020-10-30 16:29:24', '2020-10-30 16:29:24'),
+(37, 46, '7890567293', 'CREDIT', 'ACTIVE', '2020-10-30 16:37:16', '2020-10-30 16:37:16');
 
 -- --------------------------------------------------------
 
@@ -121,7 +123,9 @@ INSERT INTO `ledger` (`id`, `sender_id`, `receiver_id`, `status`, `amount`, `des
 (13, 22, 43, 'SUCCESS', 30, 'test', '2020-10-30 15:28:15', '2020-10-30 15:28:15'),
 (14, 22, 43, 'SUCCESS', 10, 'test', '2020-10-30 15:31:28', '2020-10-30 15:31:28'),
 (15, 22, 43, 'SUCCESS', 1997, 'test', '2020-10-30 15:35:26', '2020-10-30 15:35:26'),
-(16, 22, 43, 'SUCCESS', 494, 'test', '2020-10-30 15:38:00', '2020-10-30 15:38:00');
+(16, 22, 43, 'SUCCESS', 494, 'test', '2020-10-30 15:38:00', '2020-10-30 15:38:00'),
+(17, 42, 45, 'SUCCESS', 1000, 'referral bonus', '2020-10-30 16:29:24', '2020-10-30 16:29:24'),
+(18, 42, 46, 'SUCCESS', 1000, 'referral bonus', '2020-10-30 16:37:16', '2020-10-30 16:37:16');
 
 -- --------------------------------------------------------
 
@@ -141,7 +145,7 @@ CREATE TABLE `users` (
   `mobile` char(15) NOT NULL,
   `mobile_validated` enum('YES','NO') NOT NULL DEFAULT 'NO',
   `mobile_verification_code` char(10) DEFAULT NULL,
-  `status` enum('ACTIVE','NOT ACTIVE') NOT NULL DEFAULT 'NOT ACTIVE',
+  `status` enum('ACTIVE','NOT ACTIVE') NOT NULL DEFAULT 'ACTIVE',
   `referral_codes` char(255) DEFAULT NULL,
   `referrer_id` bigint(20) UNSIGNED NOT NULL DEFAULT 0,
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp(),
@@ -160,7 +164,9 @@ INSERT INTO `users` (`id`, `type`, `first_name`, `middle_name`, `last_name`, `em
 (34, 'REGULAR', 'janet', '', 'partick', 'janetpatrick@gmail.com', '$2y$10$iLjSst1CfP3ETk/cNVQP1OUpG73DYCs8ap6c16iv4XvhfGr/IT10W', 'NO', '07032090746', 'NO', NULL, 'ACTIVE', '0729c82284bb483753ed2c7a8bcd900f', 22, '2020-10-29 15:00:02', '2020-10-29 15:00:02'),
 (42, 'DEFAULT', 'CredPal', 'CredPal', 'CredPal', 'credpa@credPal.com', '$2y$10$vujQiCTY/rOQNSoxE4dYrO7d6Wgf5bmL92/DoO4n/j1HYpK2OeUGG', 'YES', '07011112222', 'YES', '1234567890', 'ACTIVE', '000001111122222', 0, '2020-10-30 04:31:27', '2020-10-30 04:31:27'),
 (43, 'REGULAR', 'tosin', 'fine girl', 'dublin-green', 'tosin@gmail.com', '$2y$10$OxL/UQRRfPiFZrrFizeFH.SJdJbbtDGl6X6GFl4ftsVV54bwtj/gC', 'NO', '07032097357', 'NO', NULL, 'ACTIVE', '32e6ce064abd3c3be912a3dac7b235b9', 0, '2020-10-30 04:34:54', '2020-10-30 04:34:12'),
-(44, 'REGULAR', 'tosinmother', '', 'dublin-green', 'tosinmother@gmail.com', '$2y$10$a5Unldyk6PdArU90ZM8.A.4pOMrD.WKlP28zJI7z1poHbZMIjr8Hi', 'NO', '07032097528', 'NO', NULL, 'ACTIVE', '2348873a6bb337fd51a201a130a81c39', 43, '2020-10-30 04:36:36', '2020-10-30 04:36:36');
+(44, 'REGULAR', 'tosinmother', '', 'dublin-green', 'tosinmother@gmail.com', '$2y$10$a5Unldyk6PdArU90ZM8.A.4pOMrD.WKlP28zJI7z1poHbZMIjr8Hi', 'NO', '07032097528', 'NO', NULL, 'ACTIVE', '2348873a6bb337fd51a201a130a81c39', 43, '2020-10-30 04:36:36', '2020-10-30 04:36:36'),
+(45, 'REGULAR', 'testFinal', '', 'dublin-green', 'test@gmail.com', '$2y$10$Z96K/Dg72rT6l10D58JK9OK9eJDIyXo1FBMkHXmnJ6uhmquJDEeXG', 'NO', '07032847593', 'NO', NULL, 'ACTIVE', '4cce5a657d80bce12267a7001667827b', 22, '2020-10-30 16:29:24', '2020-10-30 16:29:24'),
+(46, 'REGULAR', 'tesAgaom', '', 'fkfk', 'gkkg@gmail.com', '$2y$10$tcCh5efEJQHAroO/Po7DMewMF0CtDrJEwbMnK/.YA0mYpWA62O10u', 'NO', '03958383948', 'NO', NULL, 'ACTIVE', 'a81ec100111ce3b037456ea5c9b42a20', 22, '2020-10-30 16:37:16', '2020-10-30 16:37:16');
 
 --
 -- Indexes for dumped tables
@@ -211,7 +217,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `accounts`
 --
 ALTER TABLE `accounts`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=36;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=38;
 
 --
 -- AUTO_INCREMENT for table `configurations`
@@ -229,13 +235,13 @@ ALTER TABLE `issues`
 -- AUTO_INCREMENT for table `ledger`
 --
 ALTER TABLE `ledger`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 
 --
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=45;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=47;
 
 --
 -- Constraints for dumped tables
