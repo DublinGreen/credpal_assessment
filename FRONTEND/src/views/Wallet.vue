@@ -467,6 +467,7 @@ export default {
               } else {
                 vmObjectInstance.showLoadingIcon = false;
                 vmObjectInstance.showErrorIcon = true;
+                vmObjectInstance.errorMessage = response.data.message;
                 vmObjectInstance.sendingRequest = false;
                 vmObjectInstance.dialog = false;
               }
@@ -476,6 +477,7 @@ export default {
               vmObjectInstance.showLoadingIcon = false;
               vmObjectInstance.showSuccessIcon = false;
               vmObjectInstance.sendingRequest = false;
+              vmObjectInstance.errorMessage = "Network error. Try Again.";
               vmObjectInstance.showErrorIcon = true;
               vmObjectInstance.dialog = false;
             });
