@@ -45,14 +45,54 @@ class CredPalTest extends TestCase
     public function testGetIDByReferralCodes()
     {
 
-        $response = $this->call('POST', ' auth/getIDByReferralCodes/');
+        $response = $this->call('GET', 'auth/getIDByReferralCodes/');
 
-        $this->assertEquals(200, $response->status());
+        $this->assertEquals(405, $response->status());
     }
 
     public function testGetAccountByAccountNumber()
     {
         $response = $this->call('POST', '/apiv1/getAccountByAccountNumber/2139686956');
         $this->assertEquals(405, $response->status());
+    }
+
+    public function testtransferFunds()
+    {
+        $response = $this->call('POST', '/apiv1/transferFunds/');
+        $this->assertEquals(401, $response->status());
+    }
+
+    public function testgetAccountNumberByUserID()
+    {
+        $response = $this->call('POST', '/apiv1/getAccountNumberByUserID/');
+        $this->assertEquals(401, $response->status());
+    }
+
+    public function testupdateUser()
+    {
+        $response = $this->call('POST', '/apiv1/updateUser/');
+        $this->assertEquals(404, $response->status());
+    }
+
+
+
+    public function testgetAccountNumberByUserIDReturnJson()
+    {
+        $this->post(
+            '/apiv1/getAccountNumberByUserID/'
+        )
+            ->seeJson([
+                "error" => "Token not provided.",
+            ]);
+    }
+
+    public function testtransferFundsJson()
+    {
+        $this->post(
+            '/apiv1/transferFunds/'
+        )
+            ->seeJson([
+                "error" => "Token not provided.",
+            ]);
     }
 }
