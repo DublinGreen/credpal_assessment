@@ -34,8 +34,8 @@ Pull from the main branch
 # STEP 1 : DATABASE INSTRUCTION
 CREATE a new database called credpal. User the default user root and no password. If you have to change any of this values. Change the values in the .env file inside the BACKEND folder. Import the credpal.sql and you done.
 
-# STEP 3 : BACKEND
-Include .env file to make it easier with installation. If you need to change database related values do it in the .env inside the BACKEND folder. To run the backend use the command
+# STEP 2 : BACKEND
+Include .env file to make it easier with installation (TAKE NOTE). If you need to change database related values do it in the .env inside the BACKEND folder. To run the backend use the command
 	 php -S localhost:9000 -t public 
 
 It is important you run on port 9000, the frontend is listening on that port.
