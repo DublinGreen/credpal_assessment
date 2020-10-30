@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Oct 30, 2020 at 05:15 PM
+-- Generation Time: Oct 30, 2020 at 05:20 PM
 -- Server version: 10.4.8-MariaDB
 -- PHP Version: 7.3.11
 
@@ -70,7 +70,7 @@ CREATE TABLE `configurations` (
 --
 
 INSERT INTO `configurations` (`id`, `name`, `value`, `updated_at`, `created_at`) VALUES
-(1, 'SEND_REGISTRATION_SMS', 'NO', '2020-10-28 20:30:24', '2020-10-28 20:30:24'),
+(1, 'SEND_REGISTRATION_SMS', 'YES', '2020-10-28 20:30:24', '2020-10-28 20:30:24'),
 (2, 'REFERRAL_BONUS', 'YES', '2020-10-29 16:05:21', '2020-10-29 16:05:21');
 
 -- --------------------------------------------------------

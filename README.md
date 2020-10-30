@@ -32,7 +32,7 @@ Used lumen(laravel) for the backend and vue cli for the frontend. I believe when
 Pull from the main branch
 
 # STEP 1 : DATABASE INSTRUCTION
-CREATE a new database called credpal. User the default user root and no password. If you have to change any of this values. Change the values in the .env file inside the BACKEND folder. Import the credpal.sql and you done.
+CREATE a new database called credpal. User the default user root and no password. If you have to change any of this values. Change the values in the .env file inside the BACKEND folder. Import the credpal.sql and you done. the table configuration has been value to off BONUS and SMS sending. Issues table to log problems that happens within the application.
 
 # STEP 2 : BACKEND
 Include .env file to make it easier with installation (TAKE NOTE). If you need to change database related values do it in the .env inside the BACKEND folder. To run the backend use the command
