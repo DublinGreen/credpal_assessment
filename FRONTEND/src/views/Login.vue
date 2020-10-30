@@ -26,7 +26,7 @@
                 <v-dialog v-model="dialogCallResponse" persistent max-width="290">
                   <v-card>
                     <v-alert v-show="showErrorIcon" dense text type="error">
-                      Mobile and password combinatin incorrect
+                      Mobile and password combination incorrect
                       <strong>Failed</strong>
                     </v-alert>
                     <sweetalert-icon icon="error" v-show="showErrorIcon" />

@@ -76,6 +76,7 @@ const urlCommons = {
     getAccountByAccountNumberUrl: "getAccountByAccountNumber/",
     getAccountNumberByUserIDUrl: "getAccountNumberByUserID/",
     getUserByIDUrl: "userByID/",
+    transferFundsUrl: "transferFunds/",
     //
     getUserByNameUrl: "getUserByName/",
     confirmEmailUrl: "confirmEmail/",

@@ -27,11 +27,11 @@
         <div style="width: 80%;float:left;">
           <p v-if="isActive" style="color:#00ff00;font-weight: bold">
             <i class="fa fa-power-on" style="margin-right: 10px;"></i>
-            {{userData.status}}
+            ACCOUNT STATUS : {{userData.status}}
           </p>
           <p v-else style="color:#ff0000;font-weight: bold">
-            <i class="fa fa-power-off" style="margin-right: 10px;"></i>
-            {{userData.status}}
+            <i class="fa fa-power-on" style="margin-right: 10px;"></i>
+            ACCOUNT STATUS : {{userData.status}}
           </p>
           <p>
             <i class="fas fa-user" style="margin-right: 10px;"></i>

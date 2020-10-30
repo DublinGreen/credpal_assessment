@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Oct 29, 2020 at 08:49 PM
+-- Generation Time: Oct 30, 2020 at 02:16 PM
 -- Server version: 10.4.8-MariaDB
 -- PHP Version: 7.3.11
 
@@ -43,10 +43,13 @@ CREATE TABLE `accounts` (
 --
 
 INSERT INTO `accounts` (`id`, `user_id`, `account_number`, `account_type`, `status`, `updated_at`, `created_at`) VALUES
-(14, 22, '2139686956', 'CREDIT', 'NOT ACTIVE', '2020-10-28 22:17:35', '2020-10-28 22:17:35'),
-(15, 23, '4592661616', 'CREDIT', 'NOT ACTIVE', '2020-10-28 23:29:12', '2020-10-28 23:29:12'),
-(17, 25, '4456554024', 'CREDIT', 'NOT ACTIVE', '2020-10-28 23:43:19', '2020-10-28 23:43:19'),
-(24, 32, '1164383802', 'CREDIT', 'NOT ACTIVE', '2020-10-29 04:55:05', '2020-10-29 04:55:05');
+(14, 22, '2139686956', 'CREDIT', 'ACTIVE', '2020-10-28 22:17:35', '2020-10-28 22:17:35'),
+(15, 23, '4592661616', 'CREDIT', 'ACTIVE', '2020-10-28 23:29:12', '2020-10-28 23:29:12'),
+(17, 25, '4456554024', 'CREDIT', 'ACTIVE', '2020-10-28 23:43:19', '2020-10-28 23:43:19'),
+(24, 32, '1164383802', 'CREDIT', 'ACTIVE', '2020-10-29 04:55:05', '2020-10-29 04:55:05'),
+(33, 42, '5843163454', 'CREDIT', 'ACTIVE', '2020-10-30 04:31:27', '2020-10-30 04:31:27'),
+(34, 43, '9031595909', 'CREDIT', 'ACTIVE', '2020-10-30 04:34:12', '2020-10-30 04:34:12'),
+(35, 44, '9755703113', 'CREDIT', 'ACTIVE', '2020-10-30 04:36:36', '2020-10-30 04:36:36');
 
 -- --------------------------------------------------------
 
@@ -99,9 +102,19 @@ CREATE TABLE `ledger` (
   `receiver_id` bigint(20) UNSIGNED NOT NULL,
   `status` enum('SUCCESS','FAILED','PENDING') NOT NULL DEFAULT 'PENDING',
   `amount` bigint(20) NOT NULL DEFAULT 0,
+  `description` text DEFAULT NULL,
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp(),
   `created_at` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `ledger`
+--
+
+INSERT INTO `ledger` (`id`, `sender_id`, `receiver_id`, `status`, `amount`, `description`, `updated_at`, `created_at`) VALUES
+(7, 0, 42, 'SUCCESS', 10000000, NULL, '2020-10-30 04:31:27', '2020-10-30 04:31:27'),
+(8, 42, 44, 'SUCCESS', 1000, NULL, '2020-10-30 04:36:36', '2020-10-30 04:36:36'),
+(9, 42, 22, 'SUCCESS', 50000, NULL, '2020-10-30 07:22:30', '2020-10-30 07:22:30');
 
 -- --------------------------------------------------------
 
@@ -133,11 +146,14 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `type`, `first_name`, `middle_name`, `last_name`, `email`, `password`, `email_validated`, `mobile`, `mobile_validated`, `mobile_verification_code`, `status`, `referral_codes`, `referrer_id`, `updated_at`, `created_at`) VALUES
-(22, 'REGULAR', 'idisimagha', '', 'dublin-green', 'greendublin007@gmail.com', '$2y$10$ntnfv6FrlikQbCQ6hiIt..QTz/ZtBoCJbDDHy10VBqt1UOkB.KXqi', 'NO', '07032090809', 'NO', NULL, 'NOT ACTIVE', '3150a01a7b4fccbb22ffb357b146bf8c', 0, '2020-10-28 22:17:35', '2020-10-28 22:17:35'),
-(23, 'REGULAR', 'juliet', '', 'wilcox', 'julietwilcox@gmail.com', '$2y$10$5t/nmMrtd9H5C.RqMakkyOCOiKInu/JtmGcgbi/SkpmmZNOB.fDzG', 'NO', '08023633856', 'NO', NULL, 'NOT ACTIVE', 'e91a0641daf34235d25f603f8f5d350e', 0, '2020-10-28 23:29:12', '2020-10-28 23:29:12'),
-(25, 'REGULAR', 'idawari', '', 'dublin-green', 'idawari@gmail.com', '$2y$10$k6h1w0nhGEtqzE84Nh.ls.tzSnI1uvy2ujo92BZELKfsJoPPzGo76', 'NO', '08095060650', 'NO', NULL, 'NOT ACTIVE', '8ccf275d6a8291b51e4c843d7ba91ff4', 0, '2020-10-28 23:43:19', '2020-10-28 23:43:19'),
-(32, 'REGULAR', 'sotonye', '', 'dublin-green', 'sotonye@gmail.com', '$2y$10$8BApPSdcMzZ/N.548wkh2eCiWWTEd75BGrWiBFqAST3NAnysKbGhq', 'NO', '07032010807', 'NO', NULL, 'NOT ACTIVE', '0dfeb289393e2c1df37da61a7d252d93', 0, '2020-10-29 04:55:04', '2020-10-29 04:55:04'),
-(34, 'REGULAR', 'janet', '', 'partick', 'janetpatrick@gmail.com', '$2y$10$iLjSst1CfP3ETk/cNVQP1OUpG73DYCs8ap6c16iv4XvhfGr/IT10W', 'NO', '07032090746', 'NO', NULL, 'NOT ACTIVE', '0729c82284bb483753ed2c7a8bcd900f', 22, '2020-10-29 15:00:02', '2020-10-29 15:00:02');
+(22, 'REGULAR', 'idisimagha', 'bernard', 'dublin-green', 'greendublin007@gmail.com', '$2y$10$ntnfv6FrlikQbCQ6hiIt..QTz/ZtBoCJbDDHy10VBqt1UOkB.KXqi', 'NO', '07032090809', 'NO', NULL, 'ACTIVE', '3150a01a7b4fccbb22ffb357b146bf8c', 0, '2020-10-30 04:14:46', '2020-10-28 22:17:35'),
+(23, 'REGULAR', 'juliet', '', 'wilcox', 'julietwilcox@gmail.com', '$2y$10$5t/nmMrtd9H5C.RqMakkyOCOiKInu/JtmGcgbi/SkpmmZNOB.fDzG', 'NO', '08023633856', 'NO', NULL, 'ACTIVE', 'e91a0641daf34235d25f603f8f5d350e', 0, '2020-10-28 23:29:12', '2020-10-28 23:29:12'),
+(25, 'REGULAR', 'idawari', '', 'dublin-green', 'idawari@gmail.com', '$2y$10$k6h1w0nhGEtqzE84Nh.ls.tzSnI1uvy2ujo92BZELKfsJoPPzGo76', 'NO', '08095060650', 'NO', NULL, 'ACTIVE', '8ccf275d6a8291b51e4c843d7ba91ff4', 0, '2020-10-28 23:43:19', '2020-10-28 23:43:19'),
+(32, 'REGULAR', 'sotonye', '', 'dublin-green', 'sotonye@gmail.com', '$2y$10$8BApPSdcMzZ/N.548wkh2eCiWWTEd75BGrWiBFqAST3NAnysKbGhq', 'NO', '07032010807', 'NO', NULL, 'ACTIVE', '0dfeb289393e2c1df37da61a7d252d93', 0, '2020-10-29 04:55:04', '2020-10-29 04:55:04'),
+(34, 'REGULAR', 'janet', '', 'partick', 'janetpatrick@gmail.com', '$2y$10$iLjSst1CfP3ETk/cNVQP1OUpG73DYCs8ap6c16iv4XvhfGr/IT10W', 'NO', '07032090746', 'NO', NULL, 'ACTIVE', '0729c82284bb483753ed2c7a8bcd900f', 22, '2020-10-29 15:00:02', '2020-10-29 15:00:02'),
+(42, 'DEFAULT', 'CredPal', 'CredPal', 'CredPal', 'credpa@credPal.com', '$2y$10$vujQiCTY/rOQNSoxE4dYrO7d6Wgf5bmL92/DoO4n/j1HYpK2OeUGG', 'YES', '07011112222', 'YES', '1234567890', 'ACTIVE', '000001111122222', 0, '2020-10-30 04:31:27', '2020-10-30 04:31:27'),
+(43, 'REGULAR', 'tosin', 'fine girl', 'dublin-green', 'tosin@gmail.com', '$2y$10$OxL/UQRRfPiFZrrFizeFH.SJdJbbtDGl6X6GFl4ftsVV54bwtj/gC', 'NO', '07032097357', 'NO', NULL, 'ACTIVE', '32e6ce064abd3c3be912a3dac7b235b9', 0, '2020-10-30 04:34:54', '2020-10-30 04:34:12'),
+(44, 'REGULAR', 'tosinmother', '', 'dublin-green', 'tosinmother@gmail.com', '$2y$10$a5Unldyk6PdArU90ZM8.A.4pOMrD.WKlP28zJI7z1poHbZMIjr8Hi', 'NO', '07032097528', 'NO', NULL, 'ACTIVE', '2348873a6bb337fd51a201a130a81c39', 43, '2020-10-30 04:36:36', '2020-10-30 04:36:36');
 
 --
 -- Indexes for dumped tables
@@ -188,7 +204,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `accounts`
 --
 ALTER TABLE `accounts`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=30;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=36;
 
 --
 -- AUTO_INCREMENT for table `configurations`
@@ -206,13 +222,13 @@ ALTER TABLE `issues`
 -- AUTO_INCREMENT for table `ledger`
 --
 ALTER TABLE `ledger`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=39;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=45;
 
 --
 -- Constraints for dumped tables

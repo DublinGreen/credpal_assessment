@@ -15,12 +15,12 @@
         <h1 style="font-size: 3em;color: #ffffff">
           Balance
           <br />
-          <span style="color: #00ff00">&#8358;{{balance}}</span>
+          <span style="color: #00ff00;text-shadow: 1px 1px 1px #000000;">&#8358;{{balance}}</span>
         </h1>
       </section>
 
       <section v-if="validAccount" style="float: left; width: 55%;padding-left: 15%">
-        <h3 style="font-weight: bolder;text-align:center;">Receiving User</h3>
+        <h3 style="font-weight: bolder;text-align:center;">Sending Funds To...</h3>
         <br />
         <div style="width: 30%;float:left">
           <img
@@ -32,13 +32,13 @@
           />
         </div>
         <div style="width: 70%;float:left;display: block;">
-          <p v-if="isActive" style="color:#00ff00;font-weight: bold">
+          <p v-if="isReceivingUserActive" style="color:#00ff00;font-weight: bold">
             <i class="fa fa-power-on" style="margin-right: 10px;"></i>
-            {{receiverUserData.status}}
+            ACCOUNT : {{receiverUserData.status}}
           </p>
           <p v-else style="color:#ff0000;font-weight: bold">
-            <i class="fa fa-power-off" style="margin-right: 10px;"></i>
-            {{receiverUserData.status}}
+            <i class="fa fa-power-on" style="margin-right: 10px;"></i>
+            ACCOUNT : {{receiverUserData.status}}
           </p>
           <p>
             <i class="fas fa-user" style="margin-right: 10px;"></i>
@@ -96,15 +96,9 @@
       </v-dialog>
       <sweetalert-icon icon="loading" v-show="showLoadingIcon" />
       <sweetalert-icon icon="success" v-show="showSuccessIcon" />
-      <v-alert v-show="showSuccessIcon" dense text type="success">
-        Document Upload
-        <strong>Success</strong>
-      </v-alert>
+      <v-alert v-show="showSuccessIcon" dense text type="success">{{successMessage}}</v-alert>
       <sweetalert-icon icon="error" v-show="showErrorIcon" />
-      <v-alert v-show="showErrorIcon" dense text type="error">
-        Error While Uploading Document
-        <strong>Failed</strong>
-      </v-alert>
+      <v-alert v-show="showErrorIcon" dense text type="error">{{errorMessage}}</v-alert>
 
       <v-container class="grey lighten-5">
         <v-row>
@@ -124,6 +118,53 @@
             </v-card>
             <v-btn v-if="accountNotValidated" @click="validateAccount">Validate Account</v-btn>
           </v-col>
+          <v-col cols="6">
+            <v-card class="pa-2" outlined tile>
+              <v-select
+                v-model="sendLaterOption"
+                :items="scheduleTransferTypeOptions"
+                label="Schedule Transfer"
+              ></v-select>
+              <v-menu
+                v-if="showTransferScheduleDatePicker"
+                ref="expiringDateMenu"
+                v-model="expiringDateMenu"
+                :close-on-content-click="false"
+                transition="scale-transition"
+                offset-y
+                max-width="290px"
+                min-width="290px"
+              >
+                <template v-slot:activator="{ on }">
+                  <v-text-field
+                    v-model="expiringDate"
+                    label="Pick date to send funds"
+                    prepend-icon
+                    readonly
+                    v-on="on"
+                  ></v-text-field>
+                </template>
+                <v-date-picker v-model="expiringDate" scrollable>
+                  <v-spacer></v-spacer>
+                  <v-btn text color="primary" @click="expiringDateMenu = false">Cancel</v-btn>
+                  <v-btn text color="primary" @click="$refs.expiringDateMenu.save(date)">OK</v-btn>
+                </v-date-picker>
+              </v-menu>
+            </v-card>
+          </v-col>
+        </v-row>
+
+        <v-row v-if="validAccount">
+          <v-col cols="6">
+            <v-textarea
+              name="input-7-1"
+              filled
+              v-model="description"
+              :counter="500"
+              label="Description"
+              auto-grow
+            ></v-textarea>
+          </v-col>
           <v-col cols="6" v-if="validAccount">
             <v-card class="pa-2" outlined tile>
               <v-text-field
@@ -139,63 +180,12 @@
             </v-card>
           </v-col>
         </v-row>
-
-        <v-row v-if="validAccount">
-          <v-col cols="6">
-            <v-textarea
-              name="input-7-1"
-              filled
-              v-model="description"
-              :error-messages="descriptionErrors"
-              :counter="500"
-              label="Description"
-              required
-              @input="$v.description.$touch()"
-              @blur="$v.description.$touch()"
-              auto-grow
-            ></v-textarea>
-          </v-col>
-          <v-col cols="6">
-            <v-card class="pa-2" outlined tile>
-              <v-select
-                v-model="sendLaterOption"
-                :items="scheduleTransferTypeOptions"
-                label="Schedule Transfer"
-              ></v-select>
-              <v-menu
-                ref="expiringDateMenu"
-                v-model="expiringDateMenu"
-                :close-on-content-click="false"
-                transition="scale-transition"
-                offset-y
-                max-width="290px"
-                min-width="290px"
-              >
-                <template v-slot:activator="{ on }">
-                  <v-text-field
-                    v-model="expiringDate"
-                    :error-messages="expiringDateErrors"
-                    label="Document Expiration Date"
-                    prepend-icon
-                    readonly
-                    v-on="on"
-                  ></v-text-field>
-                </template>
-                <v-date-picker v-model="expiringDate" no-title scrollable>
-                  <v-spacer></v-spacer>
-                  <v-btn text color="primary" @click="expiringDateMenu = false">Cancel</v-btn>
-                  <v-btn text color="primary" @click="$refs.expiringDateMenu.save(date)">OK</v-btn>
-                </v-date-picker>
-              </v-menu>
-            </v-card>
-          </v-col>
-        </v-row>
       </v-container>
       <div style="clear:both;"></div>
       <br />
 
       <v-btn color="green" v-if="validAccount" style="color: #ffffff" class="mr-4" @click="submit">
-        <i class="fa fa-folder"></i>&nbsp; Submit
+        <i class="fa fa-folder"></i>&nbsp; Transfer Funds
       </v-btn>
       <v-btn v-if="validAccount" @click="clear">clear</v-btn>
     </form>
@@ -236,75 +226,11 @@ export default {
       },
       config
     );
-
-    axios
-      .get(this.endpointGetActiveDocumentTypeUrl, config)
-      .then(function(response) {
-        if (response.data.status) {
-          vmObjectInstance.documentTypeData = response.data.data;
-
-          vmObjectInstance.documentTypeData.map(documentObj => {
-            if (documentObj !== null && documentObj.status === "ACTIVE") {
-              vmObjectInstance.documentTypeOptions.push({
-                text: `${documentObj.name}`,
-                value: documentObj.id
-              });
-            }
-          });
-        }
-      })
-      .catch(function(error) {
-        console.error(error);
-      });
-
-    axios
-      .get(this.endpointGetActiveDocumentExpirationUrl, config)
-      .then(function(response) {
-        if (response.data.status) {
-          vmObjectInstance.documentExpirationData = response.data.data;
-
-          vmObjectInstance.documentExpirationData.map(documentExpiration => {
-            if (
-              documentExpiration !== null &&
-              documentExpiration.status === "ACTIVE"
-            ) {
-              vmObjectInstance.documentExpirationOptions.push({
-                text: `${documentExpiration.name}`,
-                value: documentExpiration.value_in_months
-              });
-            }
-          });
-        }
-      })
-      .catch(function(error) {
-        console.error(error);
-      });
-
-    let dataToSend = {
-      email: localStorage.getItem(store.state.setEmailLocalStorageKey)
-    };
-
-    axios
-      .post(this.endpointGetUserUrl, dataToSend, config)
-      .then(function(response) {
-        if (response.data.status) {
-          vmObjectInstance.userData = response.data.data;
-        } else {
-          vmObjectInstance.logout();
-        }
-      })
-      .catch(function(error) {
-        console.error(error);
-      });
   },
   mixins: [validationMixin],
   validations: {
     accountNumber: { required, maxLength: maxLength(11) },
-    amount: { required, maxLength: maxLength(5) },
-    description: { required, maxLength: maxLength(50) },
-    expiringDate: { required },
-    document: { required },
-    documentExpirationInterval: { required }
+    amount: { required, maxLength: maxLength(5) }
   },
   data: () => ({
     showLoadingIcon: false,
@@ -317,6 +243,11 @@ export default {
     dialogCallResponse: false,
     balance: "",
     balanceNumber: 0.0,
+    errorMessage: "",
+    successMessage: "",
+    isReceivingUserActive: false,
+    showTransferScheduleDatePicker: false,
+    sendLaterOption: null,
     appGetWallertBalanceEndpoint:
       store.state.urlStore.baseUrl + store.state.urlStore.getWalletBalanceUrl,
     endpointGetAccountByAccountNumberUrl:
@@ -324,6 +255,8 @@ export default {
       store.state.urlStore.getAccountByAccountNumberUrl,
     endpointGetUserByIDUrl:
       store.state.urlStore.baseUrl + store.state.urlStore.getUserByIDUrl,
+    endpointTransferFundsUrl:
+      store.state.urlStore.baseUrl + store.state.urlStore.transferFundsUrl,
     rules: [
       value =>
         !value ||
@@ -336,12 +269,12 @@ export default {
     receiverUserAccountData: null,
     scheduleTransferTypeOptions: [
       {
-        text: "Schedule transfer for later",
-        value: "yes"
+        text: "NO",
+        value: "no"
       },
       {
-        text: "Send Now",
-        value: "no"
+        text: "Yes, Schedule transfer",
+        value: "yes"
       }
     ],
     documentExpirationOptions: [],
@@ -369,16 +302,22 @@ export default {
     ],
 
     objectToSend: {
-      userID: 0,
-      file: "",
-      uploadedBy: 0,
+      from_userID: 0,
+      to_userID: "",
+      amount: 0,
       description: "",
-      documentTypeID: 0,
-      expiringDate: "",
-      expirationInterval: ""
+      schedule_transfer: 0,
+      schedule_date: ""
     }
   }),
   watch: {
+    sendLaterOption: function(val) {
+      if (val == "yes") {
+        this.showTransferScheduleDatePicker = true;
+      } else {
+        this.showTransferScheduleDatePicker = false;
+      }
+    },
     balance: function(val) {
       this.balanceNumber = val.replace(",", "");
     },
@@ -408,31 +347,6 @@ export default {
       !this.$v.amount.maxLength &&
         errors.push("Amount must be no more than 50,000 characters long");
       !this.$v.amount.required && errors.push("Amount is required.");
-      return errors;
-    },
-    descriptionErrors() {
-      const errors = [];
-      if (!this.$v.description.$dirty) return errors;
-      !this.$v.description.maxLength &&
-        errors.push("Description must be no more than 500 characters long");
-      !this.$v.description.required && errors.push("Description is required.");
-      return errors;
-    },
-    expiringDateErrors() {
-      const errors = [];
-      !this.$v.expiringDate.required &&
-        errors.push("Document Expiration Date is required.");
-      return errors;
-    },
-    documentUploadErrors() {
-      const errors = [];
-      !this.$v.document.required && errors.push("Upload Document.");
-      return errors;
-    },
-    documentExpirationErrors() {
-      const errors = [];
-      !this.$v.documentExpirationInterval.required &&
-        errors.push("Document Expiration Interval is required.");
       return errors;
     }
   },
@@ -471,6 +385,12 @@ export default {
         .then(function(response) {
           if (response.data.status) {
             vmObjectInstance.receiverUserData = response.data.data;
+            if (response.data.data.status) {
+              vmObjectInstance.isReceivingUserActive = true;
+            } else {
+              vmObjectInstance.isReceivingUserActive = false;
+            }
+
             vmObjectInstance.validAccount = true;
             vmObjectInstance.accountNotValidated = false;
           }
@@ -506,64 +426,68 @@ export default {
     submit() {
       this.$v.$touch();
       if (!this.$v.$invalid) {
-        this.showLoadingIcon = true;
-        this.dialog = true;
-        let vmObjectInstance = this;
+        let answer = confirm(
+          "Are you sure you want to transfer funds " + this.receiverUserData.first_name + " " + this.receiverUserData.last_name
+        );
+        if (answer) {
+          this.showLoadingIcon = true;
+          this.dialog = true;
 
-        this.objectToSend.userID = this.userData.id;
-        this.objectToSend.file = this.document;
-        this.objectToSend.uploadedBy = this.userData.email;
-        this.objectToSend.description = this.description;
-        this.objectToSend.documentTypeID = this.documentType;
-        this.objectToSend.expiringDate = this.expiringDate;
-        this.objectToSend.expirationInterval = this.documentExpirationInterval;
+          this.objectToSend.from_userID = store.state.userID;
+          this.objectToSend.to_userID = this.receiverUserData.id;
+          this.objectToSend.amount = this.amount;
+          this.objectToSend.description = this.description;
+          this.objectToSend.schedule_transfer = this.sendLaterOption;
+          this.objectToSend.schedule_date = this.expiringDate;
 
-        let formData = new FormData();
-        formData.append("file", this.document);
-        formData.append("userID", this.userData.id);
-        formData.append("uploadedBy", this.userData.email);
-        formData.append("description", this.description);
-        formData.append("documentTypeID", this.documentType);
-        formData.append("expiringDate", this.expiringDate);
-        formData.append("expirationInterval", this.documentExpirationInterval);
-
-        let config = {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem(
-              store.state.setTokenLocalStorageKey
-            )}`
-          }
-        };
-
-        axios
-          .post(this.endpointUploadDocumentUrl, formData, config)
-          .then(function(response) {
-            if (response.data.status) {
-              vmObjectInstance.showLoadingIcon = false;
-              vmObjectInstance.dialog = false;
-              vmObjectInstance.sendingRequest = false;
-              vmObjectInstance.showErrorIcon = false;
-              vmObjectInstance.successMessage = "Document Uploaded";
-              vmObjectInstance.showSuccessAlert = true;
-              vmObjectInstance.showSuccessIcon = true;
-            } else {
-              vmObjectInstance.showLoadingIcon = false;
-              vmObjectInstance.showErrorIcon = true;
-              vmObjectInstance.sendingRequest = false;
-              vmObjectInstance.dialog = false;
+          let config = {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem(
+                store.state.setTokenLocalStorageKey
+              )}`
             }
-          })
-          .catch(function(error) {
-            console.error(error);
-            vmObjectInstance.showLoadingIcon = false;
-            vmObjectInstance.showSuccessIcon = false;
-            vmObjectInstance.sendingRequest = false;
-            vmObjectInstance.showErrorIcon = true;
-            vmObjectInstance.dialog = false;
-          });
+          };
 
-        // let headers = this.objectToSend;
-        // this.uploadDocument(vmObjectInstance, headers);
+          let vmObjectInstance = this;
+
+          axios
+            .post(
+              vmObjectInstance.endpointTransferFundsUrl,
+              vmObjectInstance.objectToSend,
+              config
+            )
+            .then(function(response) {
+              console.log(response);
+              if (response.data.status) {
+                vmObjectInstance.showLoadingIcon = false;
+                vmObjectInstance.dialog = false;
+                vmObjectInstance.sendingRequest = false;
+                vmObjectInstance.showErrorIcon = false;
+                vmObjectInstance.successMessage = response.data.message;
+                vmObjectInstance.showSuccessAlert = true;
+                vmObjectInstance.showSuccessIcon = true;
+              } else {
+                vmObjectInstance.showLoadingIcon = false;
+                vmObjectInstance.showErrorIcon = true;
+                vmObjectInstance.sendingRequest = false;
+                vmObjectInstance.dialog = false;
+              }
+            })
+            .catch(function(error) {
+              console.error(error);
+              vmObjectInstance.showLoadingIcon = false;
+              vmObjectInstance.showSuccessIcon = false;
+              vmObjectInstance.sendingRequest = false;
+              vmObjectInstance.showErrorIcon = true;
+              vmObjectInstance.dialog = false;
+            });
+
+          setTimeout(() => {
+            vmObjectInstance.clear();
+            vmObjectInstance.$v.$reset();
+            vmObjectInstance.$router.go(); // reloads the page
+          }, store.state.alertTimeout);
+        }
       }
     },
     clear() {

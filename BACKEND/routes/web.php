@@ -42,6 +42,8 @@ $router->group(['middleware' => 'jwt.auth', 'prefix' => 'apiv1'], function () us
 
     $router->post('getWalletBalance', ['uses' => 'WalletController@getBalance']);
 
+    $router->post('transferFunds', ['uses' => 'WalletController@transfer']);
+
     $router->post('getAccountNumberByUserID', ['uses' => 'AccountController@getAccountNumberByUserID']);
 
     #//

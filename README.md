@@ -10,9 +10,9 @@ Using Larvel/Vue create a simple application that allows a user do the following
 
 3.    View wallet balances. (DONE)
 
-4.    Simulate instant and future account transfers.
+4.    Simulate instant and future account transfers. (DONE)
 
-5.    Simulate KYC levels for transfer limits. A user with a valid ID should be able to transfer over 50,000 AND one without a valid ID shouldn't.
+5.    Simulate KYC levels for transfer limits. A user with a valid ID should be able to transfer over 50,000 AND one without a valid ID shouldn't. (DONE)
 
 This would ideally be thoroughly documented with complete test coverage, kindly host the code submission on bitbucket/github and provide a clear setup instruction within the README.md file.
 

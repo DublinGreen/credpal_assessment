@@ -224,6 +224,30 @@ class CredPal implements CredPal_Interface
         }
     }
 
+    public function transfer($transactionArray)
+    {
+        // print_r($transactionArray);
+        $returnBool = false;
+        if ($transactionArray['schedule_transfer'] == 'yes') {
+            // schedule transfer
+        } else {
+            $ledger = Ledger::create([
+                'sender_id' => $transactionArray['from_userID'],
+                'receiver_id' => $transactionArray['to_userID'],
+                'status' => $this::TRANSACTION_STATE[0],
+                'amount' => $transactionArray['amount'],
+                'description' => $transactionArray['description'],
+            ]);
+            $returnBool = $ledger->save();
+        }
+
+        if ($returnBool) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     private function createDefaultAccount()
     {
         $CREDPAL_USER =
