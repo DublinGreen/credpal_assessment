@@ -58,5 +58,8 @@ Used vue cli for the frontend. You need to install vue cli or npm. After install
 	npm run serve
 
 It will start the frontend on port localhost:8080. Navigate to the url in your browser and signup. After login. If your internet is connected. An SMS will be sent to welcome you to the platform. I deativated the mobile confirmation feature and knowing you most likely don't have SMTP configured on your local machine. Deactivate the email confirmation features also. So just login and all is set. Used vuex as a store management so all global values are there.
+
+# CONCLUSTION
+Deadline was real tight but i hope the application will impress the team. Developed to meet standard and built it for extension. Any issue contact me via mail. Thanks and have a <bug free day> </bug free day>
 	
 
