@@ -35,9 +35,9 @@ const routes = [
     component: () => import("../views/Signup.vue")
   },
   {
-    path: "/UploadDocument",
-    name: "UploadDocument",
-    component: () => import("../views/UploadDocument.vue")
+    path: "/Wallet",
+    name: "Wallet",
+    component: () => import("../views/Wallet.vue")
   },
   {
     path: "/ManageUserDocumentsCrud",
@@ -48,11 +48,6 @@ const routes = [
     path: "/ConfirmEmail/:companyName/:key",
     name: "ConfirmEmail",
     component: () => import("../views/ConfirmEmail.vue")
-  },
-  {
-    path: "/Training",
-    name: "Training",
-    component: () => import("../views/Training.vue")
   }
 ];
 

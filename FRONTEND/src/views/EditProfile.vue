@@ -12,7 +12,7 @@
       Edit Profile
       <i class="fas fa-user-tie iconlight"></i>
     </h1>
-    <p class="text-muted">You cannot edit company name and email</p>
+    <p class="text-muted">You can only edit middle name</p>
     <form>
       <sweetalert-icon icon="loading" v-show="showLoadingIcon" />
       <sweetalert-icon icon="success" v-show="showSuccessIcon" />
@@ -30,23 +30,16 @@
       </v-row>
 
       <v-row justify="center">
-          <v-dialog v-model="showErrorAlert" persistent max-width="290">
+        <v-dialog v-model="showErrorAlert" persistent max-width="290">
           <v-card>
-              <v-alert
-              v-show="showErrorAlert"
-              dense
-              text
-              type="error"
-              >
-              {{errorMessage}}
-              </v-alert>
-              <sweetalert-icon icon="error" v-show="showErrorAlert" />
-              <v-card-actions>
+            <v-alert v-show="showErrorAlert" dense text type="error">{{errorMessage}}</v-alert>
+            <sweetalert-icon icon="error" v-show="showErrorAlert" />
+            <v-card-actions>
               <v-spacer></v-spacer>
               <v-btn color="green darken-1" text @click="showErrorAlert = false">Close</v-btn>
-              </v-card-actions>
+            </v-card-actions>
           </v-card>
-          </v-dialog>
+        </v-dialog>
       </v-row>
 
       <v-row justify="center">
@@ -64,19 +57,33 @@
 
       <v-container class="grey lighten-5">
         <v-row>
-          <v-col cols="6">
+          <v-col cols="4">
             <v-card class="pa-2" outlined tile>
               <v-text-field
-                v-model="companyData.name"
+                v-model="userData.first_name"
                 title="Readonly"
-                label="Company Name"
+                label="First Name"
                 readonly
               ></v-text-field>
             </v-card>
           </v-col>
-          <v-col cols="6">
+          <v-col cols="4">
             <v-card class="pa-2" outlined tile>
-              <v-text-field v-model="companyData.email" title="Readonly" label="Email" readonly></v-text-field>
+              <v-text-field
+                :error-messages="middleNameErrors"
+                v-model="middle_name"
+                label="Middle Name"
+              ></v-text-field>
+            </v-card>
+          </v-col>
+          <v-col cols="4">
+            <v-card class="pa-2" outlined tile>
+              <v-text-field
+                v-model="userData.last_name"
+                title="Readonly"
+                label="last Name"
+                readonly
+              ></v-text-field>
             </v-card>
           </v-col>
         </v-row>
@@ -87,67 +94,19 @@
           <v-col cols="6">
             <v-card class="pa-2" outlined tile>
               <v-text-field
-                v-model="phone"
-                :error-messages="phoneErrors"
-                label="Phone"
+                v-model="userData.mobile"
+                label="Mobile"
+                title="Readonly"
                 required
-                :counter="50"
-                @input="$v.phone.$touch()"
-                @blur="$v.phone.$touch()"
+                readonly
               ></v-text-field>
             </v-card>
           </v-col>
+
           <v-col cols="6">
             <v-card class="pa-2" outlined tile>
-              <v-text-field v-model="website" label="Website" :counter="250"></v-text-field>
+              <v-text-field v-model="userData.email" title="Readonly" label="Email" readonly></v-text-field>
             </v-card>
-          </v-col>
-        </v-row>
-      </v-container>
-
-      <v-container class="grey lighten-5">
-        <v-row>
-          <v-col cols="6">
-            <v-card class="pa-2" outlined tile>
-              <v-textarea
-                v-model="about"
-                :counter="500"
-                label="About Company"
-                @input="$v.about.$touch()"
-                @blur="$v.about.$touch()"
-              ></v-textarea>
-            </v-card>
-          </v-col>
-          <v-col cols="6">
-            <v-container class="grey lighten-5">
-              <v-row>
-                <v-col cols="8" md="8">
-                  <v-file-input
-                    :rules="rules"
-                    accept="image/*"
-                    placeholder="Company Logo (image format only)"
-                    hint="Company Logo (Image format only)"
-                    v-model="logoFile"
-                    error-message="Please Update Company Logo"
-                    required
-                    label="Company Logo"
-                    show-size
-                    counter
-                    chips
-                  ></v-file-input>
-                </v-col>
-
-                <v-col cols="4" md="4">
-                  <img
-                    v-show="companyLogoExist"
-                    :src="companyLogo"
-                    alt="company logo"
-                    title="company logo"
-                    width="100px"
-                  />
-                </v-col>
-              </v-row>
-            </v-container>
           </v-col>
         </v-row>
       </v-container>
@@ -182,7 +141,7 @@
 
 <script>
 import { validationMixin } from "vuelidate";
-import { required, maxLength } from "vuelidate/lib/validators";
+import { maxLength } from "vuelidate/lib/validators";
 import store from "../store";
 import axios from "axios";
 import NavMain from "../components/Navs/NavMain.vue";
@@ -203,12 +162,12 @@ export default {
     showErrorIcon: false,
     sendingRequest: false,
     showSuccessAlert: false,
-    showErrorAlert:false,
+    showErrorAlert: false,
     successMessage: "",
     errorMessage: "",
     endpoint: store.state.urlStore.baseUrl + store.state.urlStore.updateUserUrl,
-    endpointGetProfileByName:
-      store.state.urlStore.baseUrl + store.state.urlStore.getUserByNameUrl,
+    endpointGetProfileByMobile:
+      store.state.urlStore.baseUrl + store.state.urlStore.getUserByMobileUrl,
     serverBaseUrl: store.state.urlStore.serverUrl,
     breadCrumbsData: [
       {
@@ -222,40 +181,26 @@ export default {
         href: ""
       }
     ],
-    logoFile: null,
-    profileName: "",
-    phone: "",
-    website: "",
-    about: "",
-    companyLogoExist: false,
-    companyLogo: "",
-    companyData: {
+    middle_name: "",
+    userData: {
       id: "",
-      name: "",
-      email: "",
-      website: "",
-      phone: "",
-      about: "",
-      logo: ""
-    },
-    rules: [
-      value =>
-        !value ||
-        value.size < store.state.companyLogoUploadLimit ||
-        "image size should be less than 5 MB!"
-    ]
+      type: "",
+      first_name: "",
+      middle_name: "",
+      last_name: "",
+      email: ""
+    }
   }),
   mixins: [validationMixin],
   validations: {
-    phone: { required, maxLength: maxLength(50) }
+    middle_name: { maxLength: maxLength(50) }
   },
   computed: {
-    phoneErrors() {
+    middleNameErrors() {
       const errors = [];
-      if (!this.$v.phone.$dirty) return errors;
-      !this.$v.phone.maxLength &&
-        errors.push("Phone must be at most 50 characters long");
-      !this.$v.phone.required && errors.push("Phone is required.");
+      if (!this.$v.middle_name.$dirty) return errors;
+      !this.$v.middle_name.maxLength &&
+        errors.push("Middle must be at most 50 characters long");
       return errors;
     }
   },
@@ -265,18 +210,13 @@ export default {
       if (!this.$v.$invalid) {
         this.showLoadingIcon = true;
         this.sendingRequest = true;
-        this.companyData.phone = this.phone;
-        this.companyData.website = this.website;
-        this.companyData.about = this.about;
-        let url = this.endpoint + this.companyData.id;
+        this.userData.middle_name = this.middle_name;
+        let url = this.endpoint + this.userData.id;
 
         let vmObjectInstance = this;
         let dataToSend = {
-          phone: this.companyData.phone,
-          website: this.companyData.website,
-          about: this.companyData.about
+          middle_name: this.userData.middle_name
         };
-        // console.log("edit profile >>> " , this.companyData);
 
         let config = {
           headers: {
@@ -311,45 +251,10 @@ export default {
           });
       }
     },
-    handleLogoFileUpload(vmObjectInstance, fileToUpload) {
-      let formData = new FormData();
-      formData.append("file", fileToUpload);
-      formData.append("userID", vmObjectInstance.companyData.id);
-
-      let url =
-        store.state.urlStore.baseUrl + store.state.urlStore.updateCompanyLogo;
-      console.log("upload url " + url);
-
-      let config = {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem(
-            store.state.setTokenLocalStorageKey
-          )}`
-        }
-      };
-
-      axios
-        .post(url, formData, config)
-        .then(data => {
-          if (data.status === 200) {
- 
-            let vmObjectInstance = this;
-            // this.getProfileByEmail(vmObjectInstance, email);
-
-            vmObjectInstance.successMessage = "Company Logo Updated";
-            vmObjectInstance.showSuccessAlert = true;
-          }
-        })
-        .catch(function() {
-          // console.log("UPLOAD FAILURE (company Logo upload)");
-          vmObjectInstance.errorMessage =
-            "UPLOAD FAILURE (company Logo upload)";
-          vmObjectInstance.showErrorAlert = true;
-        });
-    },
-    getProfile(){
+    getProfile() {
       this.profileName = this.$route.params.name;
       let vmObjectInstance = this;
+      vmObjectInstance.loadingPage = true;
 
       let config = {
         headers: {
@@ -359,35 +264,23 @@ export default {
         }
       };
 
-      vmObjectInstance.loadingPage = true;
+      let dataToSend = {
+        mobile: localStorage.getItem(store.state.setMobileLocalStorageKey)
+      };
+
       axios
-        .get(this.endpointGetProfileByName + this.profileName, config)
+        .post(this.endpointGetProfileByMobile, dataToSend, config)
         .then(function(response) {
-          // console.log("response get Profile >>> ", response);
           vmObjectInstance.loadingPage = false;
           if (response.data.status) {
-            vmObjectInstance.companyData = response.data.data;
-            vmObjectInstance.phone = vmObjectInstance.companyData.phone;
-            vmObjectInstance.website = vmObjectInstance.companyData.website;
-            vmObjectInstance.about = vmObjectInstance.companyData.about;
-            vmObjectInstance.companyLogo =
-              vmObjectInstance.serverBaseUrl + vmObjectInstance.companyData.logo;
-
-            if (vmObjectInstance.companyLogo != null) {
-              vmObjectInstance.companyLogoExist = true;
-            }
+            vmObjectInstance.userData = response.data.data;
+            vmObjectInstance.middle_name =
+              vmObjectInstance.userData.middle_name;
           }
         })
         .catch(function(error) {
           console.error(error);
         });
-    
-      }
-  },
-  watch: {
-    logoFile: function(val) {
-      let vmObjectInstance = this;
-      this.handleLogoFileUpload(vmObjectInstance, val);
     }
   }
 };

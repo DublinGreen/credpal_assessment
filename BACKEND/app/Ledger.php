@@ -20,7 +20,7 @@ class Ledger extends Model implements AuthenticatableContract, AuthorizableContr
      * @var array
      */
     protected $fillable = [
-        'id', 'sender_id', 'receiver_id', 'status', 'created_at'
+        'id', 'sender_id', 'receiver_id', 'status', 'created_at', 'amount', 'description'
     ];
 
     /**

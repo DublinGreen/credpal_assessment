@@ -50,6 +50,38 @@ class CredPal implements CredPal_Interface
         return $confirmationKey;
     }
 
+    private function getReceivedTotalFromLedgerByUserIDAndStatus($userID, $transactionStatus)
+    {
+        $resultSet = DB::select(DB::raw("SELECT SUM(amount) AS total FROM ledger
+        WHERE receiver_id = :user_receiving AND status = :ledger_status;
+       "), array(
+            'user_receiving' => $userID,
+            'ledger_status' => $transactionStatus
+        ));
+
+        if (!empty($resultSet)) {
+            return $resultSet;
+        } else {
+            return 0.0;
+        }
+    }
+
+    private function getSentTotalFromLedgerByUserIDAndStatus($userID, $transactionStatus)
+    {
+        $resultSet = DB::select(DB::raw("SELECT SUM(amount) AS total FROM ledger
+        WHERE sender_id = :user_sending AND status = :ledger_status;
+       "), array(
+            'user_sending' => $userID,
+            'ledger_status' => $transactionStatus
+        ));
+
+        if (!empty($resultSet)) {
+            return $resultSet;
+        } else {
+            return 0.0;
+        }
+    }
+
     public function validateReferrerID($referrerID)
     {
         $user = User::where('referrer_id', $referrerID)->first();
@@ -96,7 +128,7 @@ class CredPal implements CredPal_Interface
         return $result;
     }
 
-    private function createAccount($user)
+    private function createAccount($user, $accountType)
     {
         if (!empty($user)) {
             $genAccountNumber = rand(1000000000, 9999999999);
@@ -116,8 +148,8 @@ class CredPal implements CredPal_Interface
                 $newAccount = Account::create([
                     'user_id' => $user->id,
                     'account_number' => $genAccountNumber,
-                    'account_type' => $this::ACCOUNT_TYPE[2],
-                    'account_status' => $this::ACCOUNT_STATUS_OPTIONS[0]
+                    'account_type' => $accountType,
+                    'status' => $this::ACCOUNT_STATUS_OPTIONS[0]
                 ]);
                 $newAccount->save();
                 return true;
@@ -153,13 +185,34 @@ class CredPal implements CredPal_Interface
             'referral_codes' => $this->genReferralCode($userArray['mobile'], $userArray['email']),
             'password' => Hash::make($userArray['password']),
             'type' => $this::APP_USER_TYPE[1],
+            'status ' => $this::ACCOUNT_STATUS_OPTIONS[0], // FOR NOW UNTIL MOBILE VALIDATION CAN BE DONE
         ]);
 
         $bool = $newUser->save();
 
         if ($bool) {
             $user = User::where('mobile', '=', $userArray['mobile'])->first();
-            $returnBoolean = $this->createAccount($user);
+            if ($user->referrer_id != 0) {
+                $returnValue = $this->getConfiguration($this::REFERRAL_BONUS_KEY);
+                if ($returnValue == 'YES') {
+                    $bonus = env('REFERAL_BONUS');
+                    $defaultUser = User::where('type', '=', $this::APP_USER_TYPE[0])->first();
+
+                    if (!empty($defaultUser)) {
+                        $bonusLedger = Ledger::create([
+                            'sender_id' => $defaultUser->id,
+                            'receiver_id' => $user->id,
+                            'status' => $this::TRANSACTION_STATE[0],
+                            'amount' => $bonus,
+                            'description' => 'referral bonus'
+                        ]);
+                        $bool = $bonusLedger->save();
+                    }
+                }
+            }
+
+            $returnBoolean = $this->createAccount($user, $this::ACCOUNT_TYPE[2]);
+
 
             $returnValue = $this->getConfiguration($this::SEND_REGISTRATION_SMS_CONFIGURATION_KEY);
             if ($returnValue == 'YES') {
@@ -214,16 +267,18 @@ class CredPal implements CredPal_Interface
 
             if ($bool) {
                 $user = User::where('mobile', '=', $CREDPAL_USER['mobile'])->first();
-                $returnBoolean = $this->createAccount($user);
+                $returnBoolean = $this->createAccount($user, $this::ACCOUNT_TYPE[0]);
 
                 //Create default money for default account
                 $defaultDeposit = env('DEFAULT_ACCOUNT_INIT_DEPOSIT');
-                $defaultLedge = Ledger::create([
+                $defaultLedger = Ledger::create([
                     'sender_id' => 0,
                     'receiver_id' => $user->id,
-                    'status' => $this::TRANSACTION_STATE[0]
+                    'status' => $this::TRANSACTION_STATE[0],
+                    'amount' => $defaultDeposit,
+                    'description' => 'DEFAULT_ACCOUNT_INIT_DEPOSIT'
                 ]);
-                $bool = $defaultLedge->save();
+                $bool = $defaultLedger->save();
 
                 if (
                     $returnBoolean &&
@@ -236,6 +291,21 @@ class CredPal implements CredPal_Interface
             }
         } else {
             return false;
+        }
+    }
+
+    public function getWalletBalance($userID)
+    {
+
+        $user = User::find($userID);
+        if (!empty($user)) {
+            $creditTotal = $this->getReceivedTotalFromLedgerByUserIDAndStatus($userID, $this::TRANSACTION_STATE[0]);
+            $debitTotal = $this->getSentTotalFromLedgerByUserIDAndStatus($userID, $this::TRANSACTION_STATE[0]);
+
+            $total = $creditTotal[0]->total - $debitTotal[0]->total;
+            return $total;
+        } else {
+            return 0.00;
         }
     }
 

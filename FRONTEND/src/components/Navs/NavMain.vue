@@ -8,8 +8,8 @@
     >
       <!--Navigation-->
       <div class="navigation-header">
-        <!-- <a href="index-2.html">
-            <span class="logo">WOW - Admin</span>
+        <!-- <a href="#">
+            <span class="logo">GREEN - Admin</span>
         </a>-->
         <!--<img src="logo.png" alt="logo" class="brand" height="50">-->
       </div>
@@ -17,10 +17,15 @@
       <!--Navigation Profile area-->
       <div class="navigation-profile">
         <img class="profile-img rounded-circle" src="assets/images/male.jpeg" alt="profile image" />
-        <h4 class="name">Meera</h4>
-        <span class="designation">UI/UX EXPERT</span>
+        <h4 class="name">{{getDisplayName}}</h4>
+        <span class="designation">{{getAccountNumber}}</span>
 
-        <a id="show-user-menu" href="javascript:void(0);" class="circle-white-btn profile-setting">
+        <a
+          style="display: none"
+          id="show-user-menu"
+          href="javascript:void(0);"
+          class="circle-white-btn profile-setting"
+        >
           <i class="fa fa-cog"></i>
         </a>
 
@@ -76,33 +81,17 @@
           <li>
             <router-link class="leftNavText" to="/Profile">
               <span class="icon-thumbnail">
-                <i class="fas fa-user-tie"></i>
+                <i class="fa fa-user"></i>
               </span>
               <span class="title">Profile</span>
             </router-link>
           </li>
           <li>
-            <router-link class="leftNavText" to="/UploadDocument">
+            <router-link class="leftNavText" to="/Wallet">
               <span class="icon-thumbnail">
                 <i class="fa fa-folder"></i>
               </span>
-              <span class="title">Document</span>
-            </router-link>
-          </li>
-          <li>
-            <router-link class="leftNavText" to="/#">
-              <span class="icon-thumbnail">
-                <i class="fas fa-briefcase"></i>
-              </span>
-              <span class="title">Services</span>
-            </router-link>
-          </li>
-          <li>
-            <router-link class="leftNavText" to="/Training">
-              <span class="icon-thumbnail">
-                <i class="fas fa-graduation-cap"></i>
-              </span>
-              <span class="title">Training</span>
+              <span class="title">Wallet</span>
             </router-link>
           </li>
           <li>
@@ -149,6 +138,9 @@ export default {
     },
     getDisplayName() {
       return store.state.userFirstName + " " + store.state.userLastName;
+    },
+    getAccountNumber() {
+      return store.state.accountNumber;
     }
   }),
   methods: {

@@ -74,17 +74,14 @@ class UserController extends Controller
         return response(['data' => User::all(), 'message' => 'all users data!', 'status' => true, 'statusCode' => env('HTTP_SERVER_CODE_OK')]);
     }
 
-    public function getUser($id, Request $request)
+    public function getUser($id)
     {
-        $validator = Validator::make($request->all(), [
-            'id' => 'required',
-        ]);
-
-        if ($validator->fails()) {
-            return response(['message' => 'Validation errors', 'errors' => $validator->errors(), 'status' => false], 422);
-        }
-
-        return response(['data' => User::find($id), 'message' => 'get user by id!', 'status' => true, 'statusCode' => env('HTTP_SERVER_CODE_OK')]);
+        $user = User::find($id);
+        if (empty($user)) {
+            return response(['message' => 'invalid user ID', 'status' => false, 'statusCode' => env('HTTP_SERVER_CODE_BAD_REQUEST')]);
+        }else{
+            return response(['data' => User::find($id), 'message' => 'get user by id!', 'status' => true, 'statusCode' => env('HTTP_SERVER_CODE_OK')]);
+        }   
     }
 
     public function getUserByEmail(Request $request)
@@ -285,7 +282,6 @@ class UserController extends Controller
                 return response(['message' => 'Validation errors', 'errors' => "userID is invalid.", 'status' => false], 200);
             }
 
-
             $validator = Validator::make($request->all(), [
                 'file' => 'required',
                 'userID' => 'required'
@@ -324,9 +320,7 @@ class UserController extends Controller
     public function update($id, Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'phone' => 'required',
-            'website' => '',
-            'about' => ''
+            'middle_name' => ''
         ]);
 
         if ($validator->fails()) {
@@ -334,27 +328,19 @@ class UserController extends Controller
         }
 
         $input = $request->all();
-        $phone = $input['phone'];
-        $website = $input['website'];
-        $about = $input['about'];
+        $middleName = $input['middle_name'];
 
         $user = User::findOrFail($id);
-        $user->phone = $phone;
-        $user->website = $website;
-        $user->about = $about;
+        $user->middle_name = $middleName;
         $saved = $user->save();
 
         if ($saved) {
             return response(['data' => [
-                'phone' => $phone,
-                'website' => $website,
-                'about' => $about,
+                'middle_name' => $middleName
             ], 'message' => 'user updated!', 'status' => true, 'statusCode' => env('HTTP_SERVER_CODE_CREATED')]);
         } else {
             return response(['data' => [
-                'phone' => $phone,
-                'website' => $website,
-                'about' => $about,
+                'middle_name' => $middleName
             ], 'message' => "unable to update user, something went wrong.", 'status' => false, 'statusCode' => env('HTTP_SERVER_CODE_BAD_REQUEST')]);
         }
         $user->update($request->all());

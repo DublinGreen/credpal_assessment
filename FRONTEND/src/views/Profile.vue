@@ -90,7 +90,7 @@ export default {
     };
 
     let dataToSend = {
-      mobile: localStorage.getItem(store.state.setEmailLocalStorageKey)
+      mobile: localStorage.getItem(store.state.setMobileLocalStorageKey)
     };
     console.log(localStorage.getItem(store.state.setTokenLocalStorageKey));
 
@@ -151,7 +151,7 @@ export default {
       isActive: false,
       fullReferrerCode: "",
       endpoint:
-        store.state.urlStore.baseUrl + store.state.urlStore.getUserByEmailUrl,
+        store.state.urlStore.baseUrl + store.state.urlStore.getUserByMobileUrl,
       serverUrl: store.state.urlStore.serverUrl,
       breadCrumbsData: [
         {

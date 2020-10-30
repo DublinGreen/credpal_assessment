@@ -22,23 +22,8 @@ $router->post(
 );
 
 
-$router->get('auth/confirmEmail/{companyName}/{linkKey}', ['uses' => 'UserController@confirmEmail']);
+//$router->get('auth/confirmEmail/{companyName}/{linkKey}', ['uses' => 'UserController@confirmEmail']);
 
-$router->get('fetchUserDocument/{key}', ['uses' => 'UserDocumentController@fetchUserDocument']);
-
-
-
-// Route::get('sendbasicemail', 'MailController@basic_email');
-// Route::get('sendbasicemail', 'MailController@basic_email');
-// Route::get('sendhtmlemail', 'MailController@html_email');
-// Route::get('sendattachmentemail', 'MailController@attachment_email');
-
-// Route::get('send_test_email', function(){
-// 	Mail::raw('Sending emails with Mailgun and Laravel is easy!', function($message)
-// 	{
-// 		$message->to('greendublin007@gmail.com');
-// 	});
-// });
 
 $router->post('auth/createUser', ['uses' => 'UserController@create']);
 
@@ -55,6 +40,11 @@ $router->group(['middleware' => 'jwt.auth', 'prefix' => 'apiv1'], function () us
 
     $router->post('getUserByMobile', ['uses' => 'UserController@getUserByMobile']);
 
+    $router->post('getWalletBalance', ['uses' => 'WalletController@getBalance']);
+
+    $router->post('getAccountNumberByUserID', ['uses' => 'AccountController@getAccountNumberByUserID']);
+
+    #//
     $router->get('getUserByName/{name}', ['uses' => 'UserController@getUserByName']);
 
     $router->put('updateUser/{id}', ['uses' => 'UserController@update']);

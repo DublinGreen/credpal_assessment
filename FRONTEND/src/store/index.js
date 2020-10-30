@@ -70,17 +70,20 @@ const urlCommons = {
     signupUrl: "createUser",
     getUserByEmailUrl: "getUserByMobile/",
     getUserByMobileUrl: "getUserByMobile/",
-    getUserByNameUrl: "getUserByName/",
     updateUserUrl: "updateUser/",
+    getIDByReferralCodesUrl: "getIDByReferralCodes/",
+    getWalletBalanceUrl: "getWalletBalance/",
+    getAccountByAccountNumberUrl: "getAccountByAccountNumber/",
+    getAccountNumberByUserIDUrl: "getAccountNumberByUserID/",
+    getUserByIDUrl: "userByID/",
+    //
+    getUserByNameUrl: "getUserByName/",
     confirmEmailUrl: "confirmEmail/",
     getActiveDocumentTypeUrl: "getActiveDocumentType",
-    getIDByReferralCodesUrl: "getIDByReferralCodes",
     uploadDocumentUrl: "uploadDocument",
     getUserDocumentsUrl: "getUserDocuments/",
     updateUserDocumentUrl: "updateUserDocument",
     getAllActiveDocumentExpirationUrl: "getAllActiveDocumentExpiration",
-    getAllActiveTrainingWithFilesUrl: "getAllActiveTrainingWithFiles",
-    getTrainingByIDUrl: "getTrainingByID",
     updateCompanyLogo: "updateCompanyLogo/"
   },
   getter: {
@@ -108,8 +111,12 @@ export default new Vuex.Store({
     setIsLoginLocalStorageKey: "isLogin",
     setEmailLocalStorageKey: "email",
     setMobileLocalStorageKey: "mobile",
+    transferLimit: 50000,
     userFirstName: "",
     userLastName: "",
+    userID: "",
+    accountNumber: "",
+    balance: "",
     appName: "CredPal",
     documentStatusOptions: ["ACTIVE", "NOT ACTIVE"]
   },
@@ -132,6 +139,15 @@ export default new Vuex.Store({
     },
     setUserLastName(state, value) {
       state.userLastName = value;
+    },
+    setUserID(state, value) {
+      state.userID = value;
+    },
+    setAccountNumber(state, value) {
+      state.accountNumber = value;
+    },
+    setWalletBalance(state, value) {
+      state.balance = value;
     },
     setIsLogin(state, value) {
       console.log("setIsLogin mutation call");

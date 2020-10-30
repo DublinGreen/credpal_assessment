@@ -66,4 +66,28 @@ class AccountController extends Controller
         $account = Account::where('account_number', $accountNumber)->first();
         return response(['data' => $account, 'message' => 'get account by account number!', 'status' => true, 'statusCode' => env('HTTP_SERVER_CODE_OK')]);
     }
+
+    public function getAccountNumberByUserID(Request $request)
+    {
+        $input = $request->all();
+        $userID = $input['userID'];
+
+        $validator = Validator::make($request->all(), [
+            'userID' => [
+                'required',
+                function ($attribute, $value, $fail) {
+                    if (User::where('id', $value)->count() == 0) {
+                        $fail($value . ' is assigned to any user.');
+                    }
+                },
+            ],
+        ]);
+
+        if ($validator->fails()) {
+            return response(['message' => 'Validation errors', 'errors' => $validator->errors(), 'status' => false], 200);
+        }
+
+        $account = Account::where('user_id', $userID)->first();
+        return response(['data' => $account, 'message' => 'get account by userID!', 'status' => true, 'statusCode' => env('HTTP_SERVER_CODE_OK')]);
+    }
 }
