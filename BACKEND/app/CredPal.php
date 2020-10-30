@@ -230,23 +230,33 @@ class CredPal implements CredPal_Interface
         $returnBool = false;
         if ($transactionArray['schedule_transfer'] == 'yes') {
             // schedule transfer
-            $ledger = Ledger::create([
-                'sender_id' => $transactionArray['from_userID'],
-                'receiver_id' => $transactionArray['to_userID'],
-                'status' => $this::TRANSACTION_STATE[0],
-                'amount' => $transactionArray['amount'],
-                'description' => $transactionArray['description'],
-            ]);
-            $returnBool = $ledger->save();
+            $balance = $this->getWalletBalance($transactionArray['from_userID']);
+            if ($transactionArray['amount'] <= $balance) {
+                $ledger = Ledger::create([
+                    'sender_id' => $transactionArray['from_userID'],
+                    'receiver_id' => $transactionArray['to_userID'],
+                    'status' => $this::TRANSACTION_STATE[0],
+                    'amount' => $transactionArray['amount'],
+                    'description' => $transactionArray['description'],
+                    'schedule_transfer' => $transactionArray['schedule_transfer'],
+                    'schedule_date' => $transactionArray['schedule_date']
+                ]);
+                $returnBool = $ledger->save();
+            }
         } else {
-            $ledger = Ledger::create([
-                'sender_id' => $transactionArray['from_userID'],
-                'receiver_id' => $transactionArray['to_userID'],
-                'status' => $this::TRANSACTION_STATE[0],
-                'amount' => $transactionArray['amount'],
-                'description' => $transactionArray['description'],
-            ]);
-            $returnBool = $ledger->save();
+            $balance = $this->getWalletBalance($transactionArray['from_userID']);
+            if ($transactionArray['amount'] <= $balance) {
+                $ledger = Ledger::create([
+                    'sender_id' => $transactionArray['from_userID'],
+                    'receiver_id' => $transactionArray['to_userID'],
+                    'status' => $this::TRANSACTION_STATE[0],
+                    'amount' => $transactionArray['amount'],
+                    'description' => $transactionArray['description'],
+                    'schedule_transfer' => $transactionArray['schedule_transfer'],
+                    'schedule_date' => $transactionArray['schedule_date']
+                ]);
+                $returnBool = $ledger->save();
+            }
         }
 
         if ($returnBool) {

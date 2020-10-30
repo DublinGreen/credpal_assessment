@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Oct 30, 2020 at 05:37 PM
+-- Generation Time: Oct 30, 2020 at 06:09 PM
 -- Server version: 10.4.8-MariaDB
 -- PHP Version: 7.3.11
 
@@ -105,6 +105,8 @@ CREATE TABLE `ledger` (
   `status` enum('SUCCESS','FAILED','PENDING') NOT NULL DEFAULT 'PENDING',
   `amount` bigint(20) NOT NULL DEFAULT 0,
   `description` text DEFAULT NULL,
+  `schedule_transfer` enum('yes','no') NOT NULL DEFAULT 'no',
+  `schedule_date` char(20) NOT NULL,
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp(),
   `created_at` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -113,19 +115,20 @@ CREATE TABLE `ledger` (
 -- Dumping data for table `ledger`
 --
 
-INSERT INTO `ledger` (`id`, `sender_id`, `receiver_id`, `status`, `amount`, `description`, `updated_at`, `created_at`) VALUES
-(7, 0, 42, 'SUCCESS', 10000000, NULL, '2020-10-30 04:31:27', '2020-10-30 04:31:27'),
-(8, 42, 44, 'SUCCESS', 1000, NULL, '2020-10-30 04:36:36', '2020-10-30 04:36:36'),
-(9, 42, 22, 'SUCCESS', 50000, NULL, '2020-10-30 07:22:30', '2020-10-30 07:22:30'),
-(10, 22, 23, 'SUCCESS', 2000, 'test', '2020-10-30 14:57:22', '2020-10-30 14:57:22'),
-(11, 22, 43, 'SUCCESS', 40495, 'rest', '2020-10-30 15:25:10', '2020-10-30 15:25:10'),
-(12, 22, 43, 'SUCCESS', 50, 'Test', '2020-10-30 15:26:26', '2020-10-30 15:26:26'),
-(13, 22, 43, 'SUCCESS', 30, 'test', '2020-10-30 15:28:15', '2020-10-30 15:28:15'),
-(14, 22, 43, 'SUCCESS', 10, 'test', '2020-10-30 15:31:28', '2020-10-30 15:31:28'),
-(15, 22, 43, 'SUCCESS', 1997, 'test', '2020-10-30 15:35:26', '2020-10-30 15:35:26'),
-(16, 22, 43, 'SUCCESS', 494, 'test', '2020-10-30 15:38:00', '2020-10-30 15:38:00'),
-(17, 42, 45, 'SUCCESS', 1000, 'referral bonus', '2020-10-30 16:29:24', '2020-10-30 16:29:24'),
-(18, 42, 46, 'SUCCESS', 1000, 'referral bonus', '2020-10-30 16:37:16', '2020-10-30 16:37:16');
+INSERT INTO `ledger` (`id`, `sender_id`, `receiver_id`, `status`, `amount`, `description`, `schedule_transfer`, `schedule_date`, `updated_at`, `created_at`) VALUES
+(7, 0, 42, 'SUCCESS', 10000000, NULL, 'no', '', '2020-10-30 04:31:27', '2020-10-30 04:31:27'),
+(8, 42, 44, 'SUCCESS', 1000, NULL, 'no', '', '2020-10-30 04:36:36', '2020-10-30 04:36:36'),
+(9, 42, 22, 'SUCCESS', 50000, NULL, 'no', '', '2020-10-30 07:22:30', '2020-10-30 07:22:30'),
+(10, 22, 23, 'SUCCESS', 2000, 'test', 'no', '', '2020-10-30 14:57:22', '2020-10-30 14:57:22'),
+(11, 22, 43, 'SUCCESS', 40495, 'rest', 'no', '', '2020-10-30 15:25:10', '2020-10-30 15:25:10'),
+(12, 22, 43, 'SUCCESS', 50, 'Test', 'no', '', '2020-10-30 15:26:26', '2020-10-30 15:26:26'),
+(13, 22, 43, 'SUCCESS', 30, 'test', 'no', '', '2020-10-30 15:28:15', '2020-10-30 15:28:15'),
+(14, 22, 43, 'SUCCESS', 10, 'test', 'no', '', '2020-10-30 15:31:28', '2020-10-30 15:31:28'),
+(15, 22, 43, 'SUCCESS', 1997, 'test', 'no', '', '2020-10-30 15:35:26', '2020-10-30 15:35:26'),
+(16, 22, 43, 'SUCCESS', 494, 'test', 'no', '', '2020-10-30 15:38:00', '2020-10-30 15:38:00'),
+(17, 42, 45, 'SUCCESS', 1000, 'referral bonus', 'no', '', '2020-10-30 16:29:24', '2020-10-30 16:29:24'),
+(18, 42, 46, 'SUCCESS', 1000, 'referral bonus', 'no', '', '2020-10-30 16:37:16', '2020-10-30 16:37:16'),
+(19, 22, 45, 'SUCCESS', 492, 'test', 'no', '', '2020-10-30 16:57:17', '2020-10-30 16:57:17');
 
 -- --------------------------------------------------------
 
@@ -235,7 +238,7 @@ ALTER TABLE `issues`
 -- AUTO_INCREMENT for table `ledger`
 --
 ALTER TABLE `ledger`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
 
 --
 -- AUTO_INCREMENT for table `users`
